@@ -1,0 +1,14 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/background_gridlayout"
+    tools:context="com.tincio.popularmovies.presentation.fragment.ListMoviesFragment"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/activity_gridlayout_recycler"
+        tools:listitem="@layout/row_recycler_movies">
+    </android.support.v7.widget.RecyclerView>
+</FrameLayout>
