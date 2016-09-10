@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:minHeight="?attr/listPreferredItemHeight"
             android:gravity="center_vertical"
-            android:background="@color/grey_800_trans"
+            android:background="@color/grey_800_trans75"
             android:layout_alignBottom="@+id/img_gridlayout">
             <TextView
                 android:layout_width="0dp"

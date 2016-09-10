@@ -5,7 +5,8 @@
     <color name="colorAccent">@color/green_movies_dark</color>
     <color name="selector_color_ripple">@color/colorPrimary</color>
 
-    <color name="grey_800_trans">#BF424242</color>
+    <color name="grey_800_trans75">#BF424242</color>
+    <color name="grey_400_trans">#BFBDBDBD</color>
     <color name="green_movies">#007362</color>
     <color name="green_movies_dark">#004534</color>
 </resources>

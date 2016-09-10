@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tincio.popularmovies.R;
+import com.tincio.popularmovies.data.services.response.Result;
 
 import java.util.List;
 
@@ -17,14 +18,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Created by innovagmd on 03/09/16.
+ * Created by tincio on 03/09/16.
  */
 public class AdapterRecyclerMovies extends  RecyclerView.Adapter<AdapterRecyclerMovies.ViewHolderItem> {
 
-    List arrayString;
+    List<Result> listMovies;
     Context context;
-    public AdapterRecyclerMovies(List arrayString) {
-        this.arrayString = arrayString;
+    public AdapterRecyclerMovies(List<Result> arrayString) {
+        this.listMovies = arrayString;
     }
 
     @Override
@@ -37,12 +38,12 @@ public class AdapterRecyclerMovies extends  RecyclerView.Adapter<AdapterRecycler
 
     @Override
     public void onBindViewHolder(ViewHolderItem holder, int position) {
-        holder.txtItemRecycler.setText(arrayString.get(position).toString());
+        holder.txtItemRecycler.setText(listMovies.get(position).getTitle());
     }
 
     @Override
     public int getItemCount() {
-        return arrayString.size();
+        return listMovies.size();
     }
 
     public class ViewHolderItem extends RecyclerView.ViewHolder {

@@ -1,11 +1,13 @@
 package com.tincio.popularmovies.presentation.fragment;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,7 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tincio.popularmovies.R;
+import com.tincio.popularmovies.data.services.response.ResponseMovies;
 import com.tincio.popularmovies.presentation.adapter.AdapterRecyclerMovies;
+import com.tincio.popularmovies.presentation.presenter.ListMoviePresenter;
+import com.tincio.popularmovies.presentation.view.ListMovieView;
 
 import java.util.Arrays;
 
@@ -24,13 +29,15 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ListMoviesFragment extends Fragment {
+public class ListMoviesFragment extends Fragment implements ListMovieView {
 
     @BindView(R.id.activity_gridlayout_recycler)
     RecyclerView recImageMovie;
     private GridLayoutManager gridLayoutManager;
     AdapterRecyclerMovies adapterRecycler;
     private Unbinder unbinder;
+    ProgressDialog dialog;
+    ListMoviePresenter presenter;
     public ListMoviesFragment() {
         // Required empty public constructor
     }
@@ -42,6 +49,8 @@ public class ListMoviesFragment extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_list_movies, container, false);
         unbinder=ButterKnife.bind(this,view);
+        presenter = new ListMoviePresenter();
+        presenter.setView(this);
         return view;
     }
 
@@ -51,18 +60,8 @@ public class ListMoviesFragment extends Fragment {
         gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         recImageMovie.setHasFixedSize(true);
         recImageMovie.setLayoutManager(gridLayoutManager);
-        String[] array = {"Interestelar1","Interestelar2","Interestelar3","Interestelar4",
-                "Interestelar1","Interestelar2","Interestelar3","Interestelar4",
-                "Interestelar1","Interestelar2","Interestelar3","Interestelar4"};
-        adapterRecycler = new AdapterRecyclerMovies(Arrays.asList(array));
-        recImageMovie.setAdapter(adapterRecycler);
 
-        adapterRecycler.setOnItemClickListener(new AdapterRecyclerMovies.OnItemClickListener() {
-            @Override
-            public void setOnItemClickListener(int posicion) {
-                changeFragment();
-            }
-        });
+        presenter.callListMovie();
     }
 
     @Override
@@ -74,8 +73,33 @@ public class ListMoviesFragment extends Fragment {
     void changeFragment(){
         FragmentTransaction fragmentTransaction =
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_base, new DetalleMovieFragment());
-        fragmentTransaction.addToBackStack("");
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
+    }
+
+    @Override
+    public void showListMovies(ResponseMovies responseMovies, String responseError) {
+        adapterRecycler = new AdapterRecyclerMovies(responseMovies.getResults());
+        recImageMovie.setAdapter(adapterRecycler);
+        adapterRecycler.setOnItemClickListener(new AdapterRecyclerMovies.OnItemClickListener() {
+            @Override
+            public void setOnItemClickListener(int posicion) {
+                changeFragment();
+            }
+        });
+    }
+
+    @Override
+    public void showLoading() {
+        dialog = new ProgressDialog(getContext());
+        dialog.show();
+       // dialog = new AlertDialog.Builder(getContext());
+    }
+
+    @Override
+    public void closeLoading() {
+        if(dialog!=null)
+            dialog.dismiss();
     }
 }
