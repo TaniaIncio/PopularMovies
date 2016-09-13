@@ -29,9 +29,10 @@
                 android:id="@+id/activity_gridlayout_txt"
                 android:textStyle="bold"
                 android:layout_weight="5"
-                android:lines="1"
                 android:ellipsize="end"
-                android:text="Interestelar"/>
+                android:lines="2"
+                android:gravity="center_vertical"
+                android:text="Interestela"/>
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

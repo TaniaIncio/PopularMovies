@@ -18,6 +18,7 @@ import com.tincio.popularmovies.R;
 import com.tincio.popularmovies.data.services.response.ResponseMovies;
 import com.tincio.popularmovies.presentation.adapter.AdapterRecyclerMovies;
 import com.tincio.popularmovies.presentation.presenter.ListMoviePresenter;
+import com.tincio.popularmovies.presentation.util.Utils;
 import com.tincio.popularmovies.presentation.view.ListMovieView;
 
 import java.util.Arrays;
@@ -36,7 +37,7 @@ public class ListMoviesFragment extends Fragment implements ListMovieView {
     private GridLayoutManager gridLayoutManager;
     AdapterRecyclerMovies adapterRecycler;
     private Unbinder unbinder;
-    ProgressDialog dialog;
+    ProgressDialog progress;
     ListMoviePresenter presenter;
     public ListMoviesFragment() {
         // Required empty public constructor
@@ -71,10 +72,12 @@ public class ListMoviesFragment extends Fragment implements ListMovieView {
     }
 
     void changeFragment(){
+        FragmentManager fm = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction =
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_base, new DetalleMovieFragment());
-        fragmentTransaction.addToBackStack(null);
+                fm.beginTransaction().replace(R.id.fragment_base, new DetalleMovieFragment());
+        fragmentTransaction.addToBackStack("");
         fragmentTransaction.commit();
+        fm.executePendingTransactions();
 
     }
 
@@ -92,14 +95,12 @@ public class ListMoviesFragment extends Fragment implements ListMovieView {
 
     @Override
     public void showLoading() {
-        dialog = new ProgressDialog(getContext());
-        dialog.show();
-       // dialog = new AlertDialog.Builder(getContext());
+        progress = Utils.showProgressDialog(getActivity());
     }
 
     @Override
     public void closeLoading() {
-        if(dialog!=null)
-            dialog.dismiss();
+        if(progress!=null)
+            progress.dismiss();
     }
 }
