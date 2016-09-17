@@ -4,4 +4,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fragment_detallemovie_trailers">Trailers</string>
+
+    <!--serializable-->
+
+    <string name="serializable_detailmovie">detailMovie</string>
 </resources>

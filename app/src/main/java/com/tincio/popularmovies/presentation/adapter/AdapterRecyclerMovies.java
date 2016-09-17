@@ -79,7 +79,7 @@ public class AdapterRecyclerMovies extends  RecyclerView.Adapter<AdapterRecycler
                 @Override
                 public void onClick(View view) {
                     if(mOnItemClickListener!=null){
-                        mOnItemClickListener.setOnItemClickListener(getPosition());
+                        mOnItemClickListener.setOnItemClickListener(listMovies.get(getAdapterPosition()));
                     }
                 }
             });
@@ -95,17 +95,30 @@ public class AdapterRecyclerMovies extends  RecyclerView.Adapter<AdapterRecycler
                 iconfavorito.setTag(favoritoOff);
             }
             iconfavorito.setImageDrawable(context.getResources().getDrawable(imagen));
+            //detect event click in icon heart
+            if(mOnItemClickListenerFavorite!=null){
+                mOnItemClickListenerFavorite.setOnItemClickListener(listMovies.get(getAdapterPosition()));
+            }
         }
     }
 
     OnItemClickListener mOnItemClickListener;
     public interface OnItemClickListener{
-        public void setOnItemClickListener(int posicion);
+        public void setOnItemClickListener(Result movie);
     }
 
     public void setOnItemClickListener(OnItemClickListener mItemClickListener){
         this.mOnItemClickListener = mItemClickListener;
     }
 
+    //for favorites
+    OnItemClickListenerFavorite mOnItemClickListenerFavorite;
+    public interface OnItemClickListenerFavorite{
+        public void setOnItemClickListener(Result movie);
+    }
+
+    public void setOnItemClickListenerFavorite(OnItemClickListenerFavorite mItemClickListener){
+        this.mOnItemClickListenerFavorite = mItemClickListener;
+    }
 
 }

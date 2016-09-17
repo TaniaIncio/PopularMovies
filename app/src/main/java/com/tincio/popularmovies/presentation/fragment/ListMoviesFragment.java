@@ -10,12 +10,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.tincio.popularmovies.R;
 import com.tincio.popularmovies.data.services.response.ResponseMovies;
+import com.tincio.popularmovies.data.services.response.Result;
 import com.tincio.popularmovies.presentation.adapter.AdapterRecyclerMovies;
 import com.tincio.popularmovies.presentation.presenter.ListMoviePresenter;
 import com.tincio.popularmovies.presentation.util.Utils;
@@ -31,6 +33,8 @@ import butterknife.Unbinder;
  * A simple {@link Fragment} subclass.
  */
 public class ListMoviesFragment extends Fragment implements ListMovieView {
+
+    private static String TAG = ListMoviesFragment.class.getSimpleName();
 
     @BindView(R.id.activity_gridlayout_recycler)
     RecyclerView recImageMovie;
@@ -71,11 +75,14 @@ public class ListMoviesFragment extends Fragment implements ListMovieView {
         unbinder.unbind();
     }
 
-    void changeFragment(){
+    void changeFragment(Result movie){
         FragmentManager fm = getActivity().getSupportFragmentManager();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(getResources().getString(R.string.serializable_detailmovie), movie);
+        Fragment fragment = DetalleMovieFragment.newInstance(bundle);
         FragmentTransaction fragmentTransaction =
-                fm.beginTransaction().replace(R.id.fragment_base, new DetalleMovieFragment());
-        fragmentTransaction.addToBackStack("");
+                fm.beginTransaction().replace(R.id.fragment_base, fragment);
+        fragmentTransaction.addToBackStack(TAG);
         fragmentTransaction.commit();
         fm.executePendingTransactions();
 
@@ -87,10 +94,22 @@ public class ListMoviesFragment extends Fragment implements ListMovieView {
         recImageMovie.setAdapter(adapterRecycler);
         adapterRecycler.setOnItemClickListener(new AdapterRecyclerMovies.OnItemClickListener() {
             @Override
-            public void setOnItemClickListener(int posicion) {
-                changeFragment();
+            public void setOnItemClickListener(Result movie) {
+                changeFragment(movie);
             }
         });
+        //for favorite
+        adapterRecycler.setOnItemClickListenerFavorite(new AdapterRecyclerMovies.OnItemClickListenerFavorite() {
+            @Override
+            public void setOnItemClickListener(Result movie) {
+                presenter.saveFavoriteMovie(movie.getId());
+            }
+        });
+    }
+
+    @Override
+    public void showResultFavorite(String response) {
+        Log.i(TAG, response);
     }
 
     @Override

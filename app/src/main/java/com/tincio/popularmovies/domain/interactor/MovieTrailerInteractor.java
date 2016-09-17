@@ -1,24 +1,22 @@
 package com.tincio.popularmovies.domain.interactor;
 
-import android.provider.SyncStateContract;
+import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
-import com.google.gson.internal.bind.ArrayTypeAdapter;
 import com.google.gson.reflect.TypeToken;
 import com.tincio.popularmovies.data.model.MovieRealm;
 import com.tincio.popularmovies.data.services.response.ResponseMovies;
-import com.tincio.popularmovies.domain.callback.ListMovieCallback;
+import com.tincio.popularmovies.data.services.response.ResponseTrailersMovie;
+import com.tincio.popularmovies.data.services.response.Result;
+import com.tincio.popularmovies.domain.callback.MovieTrailerCallback;
 import com.tincio.popularmovies.presentation.application.PopularMoviesApplication;
 import com.tincio.popularmovies.presentation.util.Constants;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
@@ -26,20 +24,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
 
+public class MovieTrailerInteractor {
 
-public class ListMovieInteractor {
-
-    ListMovieCallback callback;
+    MovieTrailerCallback callback;
     public int TIMEOUT = 5000;
-    public ListMovieInteractor(ListMovieCallback callback){
+    public MovieTrailerInteractor(MovieTrailerCallback callback){
         this.callback = callback;
     }
 
-    public void callListMovies(){
+    public void getMovieTrailers(Integer id){
         try{
-            getRequesListMovies(Constants.serviceNames.GET_LIST_MOVIES);
+            getRequesListMovies(Constants.serviceNames.GET_TRAILERS(id));
         }catch(Exception e){
             throw e;
         }
@@ -55,7 +52,7 @@ public class ListMovieInteractor {
                             @Override
                             public void onResponse(JSONObject response) {
                                 Gson gson = new Gson();
-                                ResponseMovies responseMovies = gson.fromJson(response.toString(), ResponseMovies.class);
+                                ResponseTrailersMovie responseMovies = gson.fromJson(response.toString(), ResponseTrailersMovie.class);
                                 callback.onResponse(responseMovies);
 
                             }
@@ -63,7 +60,7 @@ public class ListMovieInteractor {
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                              callback.onResponse(null, error.getMessage());
+                                callback.onResponse(null, error.getMessage());
                             }
                         });
                 jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
@@ -76,9 +73,9 @@ public class ListMovieInteractor {
         }
     }
 
-    //for favorite
+    //For favorite
 
-    public void saveFavorite(Integer id){
+    void saveFavorite(Integer id){
         try{
             PopularMoviesApplication application = PopularMoviesApplication.mApplication;
             Realm realm = application.getRealm();
@@ -92,12 +89,13 @@ public class ListMovieInteractor {
                 movieRealm.setId(id);
                 realm.copyToRealm(movieRealm);
             }
-            realm.commitTransaction();
+           realm.commitTransaction();
             callback.onResponseFavorite("succesfull");
         }catch(Exception e){
             callback.onResponseFavorite("error");
-            //  throw e;
+          //  throw e;
         }
     }
+
 
 }

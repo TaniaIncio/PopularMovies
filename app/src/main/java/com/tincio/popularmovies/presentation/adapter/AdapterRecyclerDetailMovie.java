@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tincio.popularmovies.R;
+import com.tincio.popularmovies.data.services.response.ResultTrailer;
 
 import org.w3c.dom.Text;
 
@@ -22,11 +23,11 @@ import butterknife.OnClick;
  */
 public class AdapterRecyclerDetailMovie extends RecyclerView.Adapter<AdapterRecyclerDetailMovie.ViewHolderItem> {
 
-    List arrayString;
+    List<ResultTrailer> listTrailer;
 
 
-    public AdapterRecyclerDetailMovie(List arrayString){
-        this.arrayString = arrayString;
+    public AdapterRecyclerDetailMovie(List listTrailer){
+        this.listTrailer = listTrailer;
     }
     @Override
     public ViewHolderItem onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -37,12 +38,12 @@ public class AdapterRecyclerDetailMovie extends RecyclerView.Adapter<AdapterRecy
 
     @Override
     public void onBindViewHolder(ViewHolderItem holder, int position) {
-       // holder.txtNombreTrailer.setText(arrayString.get(position).toString());
+        holder.txtNombreTrailer.setText("Trailer "+(position+1));
     }
 
     @Override
     public int getItemCount() {
-        return arrayString.size();
+        return (listTrailer.size()>0?listTrailer.size():0);
     }
 
     public class ViewHolderItem extends RecyclerView.ViewHolder {
@@ -62,7 +63,7 @@ public class AdapterRecyclerDetailMovie extends RecyclerView.Adapter<AdapterRecy
         void onClickLinearTrailer(){
             try{
                 if(mOnItemClickListener!=null){
-                    mOnItemClickListener.setOnItemClickListener(getAdapterPosition());
+                    mOnItemClickListener.setOnItemClickListener(listTrailer.get(getAdapterPosition()));
                 }
             }catch (Exception e){
                 e.printStackTrace();
@@ -74,7 +75,7 @@ public class AdapterRecyclerDetailMovie extends RecyclerView.Adapter<AdapterRecy
 
     OnItemClickListener mOnItemClickListener;
     public interface OnItemClickListener{
-        public void setOnItemClickListener(int posicion);
+        public void setOnItemClickListener(ResultTrailer trailer);
     }
 
     public void setOnItemClickListener(OnItemClickListener mItemClickListener){

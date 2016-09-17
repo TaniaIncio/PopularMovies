@@ -9,4 +9,5 @@ import java.util.List;
  */
 public interface ListMovieView extends MvpView {
     void showListMovies(ResponseMovies responseMovies, String responseError);
+    void showResultFavorite(String response);
 }

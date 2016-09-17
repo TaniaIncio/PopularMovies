@@ -26,7 +26,7 @@ public class ListMoviePresenter implements MvpPresenter<ListMovieView>, ListMovi
 
     public void callListMovie(){
         try{
-       //     view.showLoading();
+            view.showLoading();
             movieInteractor.callListMovies();
         }catch(Exception e){
             e.printStackTrace();
@@ -35,7 +35,18 @@ public class ListMoviePresenter implements MvpPresenter<ListMovieView>, ListMovi
 
     @Override
     public void onResponse(ResponseMovies responseMovies, String... mensajes) {
-   //     view.closeLoading();
         view.showListMovies(responseMovies, (mensajes.length>0?mensajes[0]:""));
+        view.closeLoading();
     }
+
+    public void saveFavoriteMovie(Integer id){
+        movieInteractor.saveFavorite(id);
+    }
+
+    @Override
+    public void onResponseFavorite(String mensajes) {
+        view.showResultFavorite(mensajes);
+    }
+
+
 }
