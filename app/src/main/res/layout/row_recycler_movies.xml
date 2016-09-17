@@ -8,18 +8,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:id="@+id/img_gridlayout"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/imagenbig"/>
+            android:id="@+id/rowrecyclermovie_img"
+            android:scaleType="centerCrop"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/listPreferredItemHeight"
             android:gravity="center_vertical"
             android:background="@color/grey_800_trans75"
-            android:layout_alignBottom="@+id/img_gridlayout">
+            android:layout_alignBottom="@+id/rowrecyclermovie_img">
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

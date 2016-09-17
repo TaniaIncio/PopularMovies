@@ -1,13 +1,24 @@
 
 package com.tincio.popularmovies.data.services.response;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 public class ResponseMovies {
 
+    @SerializedName("page")
+    @Expose
     private Integer page;
+    @SerializedName("results")
+    @Expose
     private List<Result> results = new ArrayList<Result>();
+    @SerializedName("total_results")
+    @Expose
     private Integer totalResults;
+    @SerializedName("total_pages")
+    @Expose
     private Integer totalPages;
 
     /**
