@@ -54,6 +54,7 @@ public class Result implements Serializable {
     @Expose
     private Double voteAverage;
 
+    private Boolean favorito;
 
     /**
      * 
@@ -307,4 +308,11 @@ public class Result implements Serializable {
         this.voteAverage = voteAverage;
     }
 
+    public Boolean getFavorito() {
+        return favorito;
+    }
+
+    public void setFavorito(Boolean favorito) {
+        this.favorito = favorito;
+    }
 }

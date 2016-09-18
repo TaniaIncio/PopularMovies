@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,6 @@ public class DetalleMovieFragment extends Fragment implements MovieTrailerView {
     FloatingActionButton fabAddFavorito;
     @BindView(R.id.toolbar_layout)
     CollapsingToolbarLayout collapsingToolbarLayout;
-    Boolean favorito = false;
     @BindView(R.id.fragmentdetallemovie_img)
     ImageView imgMovie;
     @BindView(R.id.contentscrolling_txt_descriptionmovie)
@@ -58,7 +58,11 @@ public class DetalleMovieFragment extends Fragment implements MovieTrailerView {
     ProgressDialog progress;
 
     MovieTrailerPresenter presenter;
+    String favoritoOff= "ic_favorite_border_white_24dp";
+    String favoritoOn= "ic_favorite_white_24dp";
+    Result detailMovieSelection;
 
+    public static String TAG = DetalleMovieFragment.class.getSimpleName();
     public DetalleMovieFragment() {
     }
 
@@ -85,34 +89,20 @@ public class DetalleMovieFragment extends Fragment implements MovieTrailerView {
         super.onActivityCreated(savedInstanceState);
         collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(android.R.color.white));
         collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.white));
-
         //get movie detail
         Result mResult = (Result) getArguments().getSerializable(getResources().getString(R.string.serializable_detailmovie));
+        detailMovieSelection = mResult;
         setDetailMovie(mResult);
-    }
-
-    @OnClick(R.id.fragmentdetallemovie_fab_addfavorite)
-    void onClickAddFavorito(){
-        try{
-            if(favorito){
-                fabAddFavorito.setImageDrawable(getResources().getDrawable(R.mipmap.ic_favorite_border_white_24dp));
-            }else{
-                fabAddFavorito.setImageDrawable(getResources().getDrawable(R.mipmap.ic_favorite_white_24dp));
-            }
-            favorito = !favorito;
-        }catch(Exception e){
-            e.printStackTrace();
-        }
     }
 
     void setDetailMovie(Result detailMovie){
         if(detailMovie!=null){
             collapsingToolbarLayout.setTitle(detailMovie.getTitle());
-           // favorito = detailMovie.getFavorite();
-            onClickAddFavorito();
             Picasso.with(getActivity()).load(Constants.serviceNames.GET_IMAGE_MOVIES+detailMovie.getBackdropPath()).into(imgMovie);
             txtDescripcionMovie.setText(detailMovie.getOverview());
             dateMovie.setText(detailMovie.getReleaseDate());
+            fabAddFavorito.setImageDrawable(Utils.getDrawableByName(getContext(),detailMovie.getFavorito()?favoritoOn:favoritoOff));
+            fabAddFavorito.setTag(detailMovie.getFavorito()?favoritoOn:favoritoOff);
             presenter.getTrailerByMovie(detailMovie.getId());
         }
     }
@@ -144,13 +134,47 @@ public class DetalleMovieFragment extends Fragment implements MovieTrailerView {
 
     @Override
     public void showResultFavorite(String response) {
-
+        try {
+            if(response.equals(getString(R.string.response_succesfull))){
+                if (fabAddFavorito.getTag().equals(favoritoOn)) {
+                    fabAddFavorito.setImageDrawable(getResources().getDrawable(R.mipmap.ic_favorite_border_white_24dp));
+                    fabAddFavorito.setTag(favoritoOff);
+                    detailMovieSelection.setFavorito(false);
+                } else {
+                    fabAddFavorito.setImageDrawable(getResources().getDrawable(R.mipmap.ic_favorite_white_24dp));
+                    fabAddFavorito.setTag(favoritoOn);
+                    detailMovieSelection.setFavorito(true);
+                }
+            }
+            changeItemOfBackFragment();
+        } catch(Exception e){
+           e.printStackTrace();
+        }
+        Log.i(TAG,response);
     }
 
     void getIntentWatchTrailer(String key){
         try{
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v="+key));
             startActivity(intent);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @OnClick(R.id.fragmentdetallemovie_fab_addfavorite)
+    void onChangeStateFavorite(){
+        try{
+            presenter.saveFavoriteMovie(detailMovieSelection.getId());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    void changeItemOfBackFragment(){
+        try{
+            ListMoviesFragment fragment = (ListMoviesFragment)getFragmentManager().findFragmentByTag(ListMoviesFragment.TAG);
+            fragment.updateItemOfRecycler(detailMovieSelection);
         }catch(Exception e){
             e.printStackTrace();
         }

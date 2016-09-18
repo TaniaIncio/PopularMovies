@@ -11,8 +11,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.internal.bind.ArrayTypeAdapter;
 import com.google.gson.reflect.TypeToken;
+import com.tincio.popularmovies.R;
 import com.tincio.popularmovies.data.model.MovieRealm;
 import com.tincio.popularmovies.data.services.response.ResponseMovies;
+import com.tincio.popularmovies.data.services.response.Result;
 import com.tincio.popularmovies.domain.callback.ListMovieCallback;
 import com.tincio.popularmovies.presentation.application.PopularMoviesApplication;
 import com.tincio.popularmovies.presentation.util.Constants;
@@ -33,6 +35,7 @@ public class ListMovieInteractor {
 
     ListMovieCallback callback;
     public int TIMEOUT = 5000;
+    PopularMoviesApplication application = PopularMoviesApplication.mApplication;
     public ListMovieInteractor(ListMovieCallback callback){
         this.callback = callback;
     }
@@ -56,8 +59,7 @@ public class ListMovieInteractor {
                             public void onResponse(JSONObject response) {
                                 Gson gson = new Gson();
                                 ResponseMovies responseMovies = gson.fromJson(response.toString(), ResponseMovies.class);
-                                callback.onResponse(responseMovies);
-
+                                callback.onResponse(checkFavoriteInList(responseMovies));
                             }
                         },
                         new Response.ErrorListener() {
@@ -76,16 +78,37 @@ public class ListMovieInteractor {
         }
     }
 
+     ResponseMovies checkFavoriteInList(ResponseMovies responseMovies){
+
+        Realm realm = application.getRealm();
+        List<Result> lista = responseMovies.getResults();
+        int indice = 0;
+        try{
+            for(Result result: lista){
+                MovieRealm movie = realm.where(MovieRealm.class).equalTo("id",result.getId()).findFirst();
+                if(realm.where(MovieRealm.class).equalTo("id",result.getId()).findFirst()!=null){
+                    result.setFavorito(true);
+                }else
+                    result.setFavorito(false);
+                lista.set(indice, result);
+                indice = indice+1;
+            }
+          responseMovies.setResults(lista);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+         return responseMovies;
+    }
+
     //for favorite
 
     public void saveFavorite(Integer id){
         try{
-            PopularMoviesApplication application = PopularMoviesApplication.mApplication;
             Realm realm = application.getRealm();
             realm.beginTransaction();
             MovieRealm movieSelection = realm.where(MovieRealm.class).equalTo("id",id).findFirst();
             if(movieSelection!=null){
-                movieSelection.setFavorite(!movieSelection.getFavorite());
+                movieSelection.setFavorite(!(movieSelection.getFavorite()==null?false:movieSelection.getFavorite()));
             }else{
                 MovieRealm movieRealm = new MovieRealm();
                 movieRealm.setFavorite(true);
@@ -93,9 +116,9 @@ public class ListMovieInteractor {
                 realm.copyToRealm(movieRealm);
             }
             realm.commitTransaction();
-            callback.onResponseFavorite("succesfull");
+            callback.onResponseFavorite(application.getString(R.string.response_succesfull));
         }catch(Exception e){
-            callback.onResponseFavorite("error");
+            callback.onResponseFavorite(application.getString(R.string.response_error)+e.getMessage());
             //  throw e;
         }
     }

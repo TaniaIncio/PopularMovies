@@ -9,6 +9,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.tincio.popularmovies.R;
 import com.tincio.popularmovies.data.model.MovieRealm;
 import com.tincio.popularmovies.data.services.response.ResponseMovies;
 import com.tincio.popularmovies.data.services.response.ResponseTrailersMovie;
@@ -30,6 +31,7 @@ public class MovieTrailerInteractor {
 
     MovieTrailerCallback callback;
     public int TIMEOUT = 5000;
+    PopularMoviesApplication application = PopularMoviesApplication.mApplication;
     public MovieTrailerInteractor(MovieTrailerCallback callback){
         this.callback = callback;
     }
@@ -44,7 +46,7 @@ public class MovieTrailerInteractor {
 
     void getRequesListMovies(String url) {
         try{
-            PopularMoviesApplication application = PopularMoviesApplication.mApplication;
+
             if (application != null) {
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                         url,
@@ -74,26 +76,24 @@ public class MovieTrailerInteractor {
     }
 
     //For favorite
-
-    void saveFavorite(Integer id){
+    public void saveFavorite(Integer id){
         try{
-            PopularMoviesApplication application = PopularMoviesApplication.mApplication;
             Realm realm = application.getRealm();
             realm.beginTransaction();
             MovieRealm movieSelection = realm.where(MovieRealm.class).equalTo("id",id).findFirst();
             if(movieSelection!=null){
-                movieSelection.setFavorite(!movieSelection.getFavorite());
+                movieSelection.setFavorite(!(movieSelection.getFavorite()==null?false:movieSelection.getFavorite()));
             }else{
                 MovieRealm movieRealm = new MovieRealm();
                 movieRealm.setFavorite(true);
                 movieRealm.setId(id);
                 realm.copyToRealm(movieRealm);
             }
-           realm.commitTransaction();
-            callback.onResponseFavorite("succesfull");
+            realm.commitTransaction();
+            callback.onResponseFavorite(application.getString(R.string.response_succesfull));
         }catch(Exception e){
-            callback.onResponseFavorite("error");
-          //  throw e;
+            callback.onResponseFavorite(application.getString(R.string.response_error)+e.getMessage());
+            //  throw e;
         }
     }
 

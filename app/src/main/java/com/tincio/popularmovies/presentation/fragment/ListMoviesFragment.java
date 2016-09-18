@@ -34,7 +34,7 @@ import butterknife.Unbinder;
  */
 public class ListMoviesFragment extends Fragment implements ListMovieView {
 
-    private static String TAG = ListMoviesFragment.class.getSimpleName();
+    public static String TAG = ListMoviesFragment.class.getSimpleName();
 
     @BindView(R.id.activity_gridlayout_recycler)
     RecyclerView recImageMovie;
@@ -43,6 +43,8 @@ public class ListMoviesFragment extends Fragment implements ListMovieView {
     private Unbinder unbinder;
     ProgressDialog progress;
     ListMoviePresenter presenter;
+    Integer positionSelection;
+    Result movieSelection;
     public ListMoviesFragment() {
         // Required empty public constructor
     }
@@ -65,7 +67,6 @@ public class ListMoviesFragment extends Fragment implements ListMovieView {
         gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         recImageMovie.setHasFixedSize(true);
         recImageMovie.setLayoutManager(gridLayoutManager);
-
         presenter.callListMovie();
     }
 
@@ -81,7 +82,7 @@ public class ListMoviesFragment extends Fragment implements ListMovieView {
         bundle.putSerializable(getResources().getString(R.string.serializable_detailmovie), movie);
         Fragment fragment = DetalleMovieFragment.newInstance(bundle);
         FragmentTransaction fragmentTransaction =
-                fm.beginTransaction().replace(R.id.fragment_base, fragment);
+                fm.beginTransaction().replace(R.id.fragment_base, fragment, DetalleMovieFragment.TAG);
         fragmentTransaction.addToBackStack(TAG);
         fragmentTransaction.commit();
         fm.executePendingTransactions();
@@ -94,22 +95,30 @@ public class ListMoviesFragment extends Fragment implements ListMovieView {
         recImageMovie.setAdapter(adapterRecycler);
         adapterRecycler.setOnItemClickListener(new AdapterRecyclerMovies.OnItemClickListener() {
             @Override
-            public void setOnItemClickListener(Result movie) {
+            public void setOnItemClickListener(Result movie, Integer position) {
+                positionSelection = position;
                 changeFragment(movie);
             }
         });
         //for favorite
         adapterRecycler.setOnItemClickListenerFavorite(new AdapterRecyclerMovies.OnItemClickListenerFavorite() {
             @Override
-            public void setOnItemClickListener(Result movie) {
+            public void setOnItemClickListener(Result movie, Integer indice) {
+                positionSelection = indice;
+                Log.i(TAG,"indice "+positionSelection);
+                movieSelection = movie;
                 presenter.saveFavoriteMovie(movie.getId());
+
             }
         });
     }
 
     @Override
     public void showResultFavorite(String response) {
-        Log.i(TAG, response);
+        if(response.equals(getString(R.string.response_succesfull))){
+            movieSelection.setFavorito(!movieSelection.getFavorito());
+            adapterRecycler.updateItemList(positionSelection, movieSelection);
+        }
     }
 
     @Override
@@ -121,5 +130,11 @@ public class ListMoviesFragment extends Fragment implements ListMovieView {
     public void closeLoading() {
         if(progress!=null)
             progress.dismiss();
+    }
+
+    //update item row of recycler
+    public void updateItemOfRecycler(Result movie){
+        Log.i(TAG,"indice "+positionSelection);
+        adapterRecycler.updateItem(positionSelection, movie);
     }
 }

@@ -11,6 +11,7 @@
     <dimen name="height_subtitule_general">48dp</dimen>
     <dimen name="height_statusbar_general">24dp</dimen>
     <dimen name="height_lisitem_general">72dp</dimen>
+    <dimen name="height_contentscrolling_image">380dp</dimen>
 
     <!--sp-->
     <dimen name="height_contentscrolling_trailers">20sp</dimen>

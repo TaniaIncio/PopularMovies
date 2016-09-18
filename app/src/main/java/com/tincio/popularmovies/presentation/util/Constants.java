@@ -8,7 +8,7 @@ public class Constants {
     private static String KEY = "39335edf6af0e5ee10c4be3cded34eb1";
     public static class serviceNames{
         public static String GET_LIST_MOVIES = "https://api.themoviedb.org/3/movie/popular?api_key="+KEY;
-        public static String GET_IMAGE_MOVIES = "http://image.tmdb.org/t/p/w500";
+        public static String GET_IMAGE_MOVIES = "http://image.tmdb.org/t/p/w780";
         //http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg
         //
         public static String GET_TRAILERS(Integer id){

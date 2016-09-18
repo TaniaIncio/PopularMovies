@@ -8,4 +8,7 @@
     <!--serializable-->
 
     <string name="serializable_detailmovie">detailMovie</string>
+    <!--responses-->
+    <string name="response_succesfull">succesfull</string>
+    <string name="response_error">error</string>
 </resources>

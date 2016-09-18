@@ -38,6 +38,6 @@ public class MovieTrailerPresenter implements MvpPresenter<MovieTrailerView>, Mo
     }
 
     public void saveFavoriteMovie(Integer id){
-        movieInteractor.getMovieTrailers(id);
+        movieInteractor.saveFavorite(id);
     }
 }
