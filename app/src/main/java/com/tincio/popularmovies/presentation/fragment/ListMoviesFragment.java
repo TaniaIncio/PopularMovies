@@ -91,23 +91,30 @@ public class ListMoviesFragment extends Fragment implements ListMovieView {
 
     @Override
     public void showListMovies(ResponseMovies responseMovies, String responseError) {
-        adapterRecycler = new AdapterRecyclerMovies(responseMovies.getResults());
+        adapterRecycler = new AdapterRecyclerMovies((responseMovies==null?null:responseMovies.getResults()));
         recImageMovie.setAdapter(adapterRecycler);
         adapterRecycler.setOnItemClickListener(new AdapterRecyclerMovies.OnItemClickListener() {
             @Override
             public void setOnItemClickListener(Result movie, Integer position) {
                 positionSelection = position;
-                changeFragment(movie);
-            }
+                if(getResources().getBoolean(R.bool.has_two_panes)){
+                    DetalleMovieFragment fragment = (DetalleMovieFragment)getFragmentManager().findFragmentByTag(DetalleMovieFragment.TAG);
+                    fragment.setDetailMovie(movie);
+                }else
+                    changeFragment(movie);
+                }
         });
         //for favorite
         adapterRecycler.setOnItemClickListenerFavorite(new AdapterRecyclerMovies.OnItemClickListenerFavorite() {
             @Override
             public void setOnItemClickListener(Result movie, Integer indice) {
                 positionSelection = indice;
-                Log.i(TAG,"indice "+positionSelection);
                 movieSelection = movie;
                 presenter.saveFavoriteMovie(movie.getId());
+                if(getResources().getBoolean(R.bool.has_two_panes)){
+                    DetalleMovieFragment fragment = (DetalleMovieFragment)getFragmentManager().findFragmentByTag(DetalleMovieFragment.TAG);
+                    fragment.showResultFavorite(getString(R.string.response_succesfull));
+                }
 
             }
         });
@@ -134,7 +141,6 @@ public class ListMoviesFragment extends Fragment implements ListMovieView {
 
     //update item row of recycler
     public void updateItemOfRecycler(Result movie){
-        Log.i(TAG,"indice "+positionSelection);
         adapterRecycler.updateItem(positionSelection, movie);
     }
 }

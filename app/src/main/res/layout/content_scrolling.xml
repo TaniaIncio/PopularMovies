@@ -47,7 +47,7 @@
                 android:textSize="@dimen/height_contentscrolling_listitem"
                 android:layout_marginRight="@dimen/margin_general_right_left"
                 android:id="@+id/contentscrolling_txt_datemovie"
-                android:text="16.02/16"/>
+                android:text=""/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                 android:layout_margin="@dimen/text_margin"
                 android:textColor="@android:color/white"
                 android:id="@+id/contentscrolling_txt_descriptionmovie"
-                android:text="aisjidjf odisd dfidjfjd sjdkjsdkfjskdaisjidjf odisd dfidjfjd sjdkjsdkfjskdaisjidjf odisd dfidjfjd sjdkjsdkfjskdaisjidjf odisd dfidjfjd sjdkjsdkfjskd" />
+                android:text="" />
         </LinearLayout>
         <TextView
             android:layout_width="wrap_content"

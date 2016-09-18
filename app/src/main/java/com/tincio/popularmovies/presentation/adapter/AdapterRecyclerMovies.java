@@ -50,7 +50,7 @@ public class AdapterRecyclerMovies extends  RecyclerView.Adapter<AdapterRecycler
         // Retrieves an image specified by the URL, displays it in the UI.
         Picasso.with(context).load(Constants.serviceNames.GET_IMAGE_MOVIES+listMovies.get(position).getPosterPath()).into(holder.imgMovie);
         String favorito ;
-        if(listMovies.get(position).getFavorito()){
+        if(listMovies.get(position).getFavorito()==null?false:listMovies.get(position).getFavorito()){
             favorito = favoritoOn;
         }else
             favorito = favoritoOff;
@@ -60,7 +60,7 @@ public class AdapterRecyclerMovies extends  RecyclerView.Adapter<AdapterRecycler
 
     @Override
     public int getItemCount() {
-        return listMovies.size();
+        return listMovies==null?0:listMovies.size();
     }
 
 

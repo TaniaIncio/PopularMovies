@@ -43,7 +43,7 @@ public class AdapterRecyclerDetailMovie extends RecyclerView.Adapter<AdapterRecy
 
     @Override
     public int getItemCount() {
-        return (listTrailer.size()>0?listTrailer.size():0);
+        return listTrailer==null?0:listTrailer.size();
     }
 
     public class ViewHolderItem extends RecyclerView.ViewHolder {

@@ -90,13 +90,16 @@ public class DetalleMovieFragment extends Fragment implements MovieTrailerView {
         collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(android.R.color.white));
         collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.white));
         //get movie detail
-        Result mResult = (Result) getArguments().getSerializable(getResources().getString(R.string.serializable_detailmovie));
-        detailMovieSelection = mResult;
-        setDetailMovie(mResult);
+        Result mResult=null;
+        if(getArguments()!=null)
+             mResult = (Result) getArguments().getSerializable(getResources().getString(R.string.serializable_detailmovie));
+        if(mResult!=null)
+            setDetailMovie(mResult);
     }
 
-    void setDetailMovie(Result detailMovie){
+    public void setDetailMovie(Result detailMovie){
         if(detailMovie!=null){
+            detailMovieSelection = detailMovie;
             collapsingToolbarLayout.setTitle(detailMovie.getTitle());
             Picasso.with(getActivity()).load(Constants.serviceNames.GET_IMAGE_MOVIES+detailMovie.getBackdropPath()).into(imgMovie);
             txtDescripcionMovie.setText(detailMovie.getOverview());
@@ -120,7 +123,7 @@ public class DetalleMovieFragment extends Fragment implements MovieTrailerView {
 
     @Override
     public void showMovieTrailer(ResponseTrailersMovie detailMovie, String responseError) {
-        adapterRecyclerDetailMovie = new AdapterRecyclerDetailMovie(detailMovie.getResults());
+        adapterRecyclerDetailMovie = new AdapterRecyclerDetailMovie(detailMovie==null?null:detailMovie.getResults());
         recTrailers.setAdapter(adapterRecyclerDetailMovie);
         linearLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL, false);
         recTrailers.setLayoutManager(linearLayoutManager);
@@ -150,7 +153,6 @@ public class DetalleMovieFragment extends Fragment implements MovieTrailerView {
         } catch(Exception e){
            e.printStackTrace();
         }
-        Log.i(TAG,response);
     }
 
     void getIntentWatchTrailer(String key){
