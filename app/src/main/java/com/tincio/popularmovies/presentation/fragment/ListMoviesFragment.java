@@ -14,6 +14,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.tincio.popularmovies.R;
 import com.tincio.popularmovies.data.services.response.ResponseMovies;
@@ -32,7 +35,7 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ListMoviesFragment extends Fragment implements ListMovieView {
+public class ListMoviesFragment extends Fragment implements ListMovieView, AdapterView.OnItemSelectedListener {
 
     public static String TAG = ListMoviesFragment.class.getSimpleName();
 
@@ -45,6 +48,8 @@ public class ListMoviesFragment extends Fragment implements ListMovieView {
     ListMoviePresenter presenter;
     Integer positionSelection;
     Result movieSelection;
+    @BindView(R.id.spinner_order_movies)
+    Spinner spinnerOrderMovies;
     public ListMoviesFragment() {
         // Required empty public constructor
     }
@@ -58,6 +63,10 @@ public class ListMoviesFragment extends Fragment implements ListMovieView {
         unbinder=ButterKnife.bind(this,view);
         presenter = new ListMoviePresenter();
         presenter.setView(this);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),R.array.order_movies,R.layout.row_spinner_ordermovies);
+        spinnerOrderMovies.setAdapter(adapter);
+        spinnerOrderMovies.setOnItemSelectedListener(this);
         return view;
     }
 
@@ -67,7 +76,7 @@ public class ListMoviesFragment extends Fragment implements ListMovieView {
         gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         recImageMovie.setHasFixedSize(true);
         recImageMovie.setLayoutManager(gridLayoutManager);
-        presenter.callListMovie();
+        presenter.callListMovie(getString(R.string.id_order_one));
     }
 
     @Override
@@ -142,5 +151,18 @@ public class ListMoviesFragment extends Fragment implements ListMovieView {
     //update item row of recycler
     public void updateItemOfRecycler(Result movie){
         adapterRecycler.updateItem(positionSelection, movie);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        if(i==0)
+            presenter.callListMovie(getString(R.string.id_order_one));
+        else
+            presenter.callListMovie(getString(R.string.id_order_two));
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }

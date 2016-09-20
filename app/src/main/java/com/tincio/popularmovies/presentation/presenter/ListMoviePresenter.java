@@ -24,10 +24,10 @@ public class ListMoviePresenter implements MvpPresenter<ListMovieView>, ListMovi
         view = null;
     }
 
-    public void callListMovie(){
+    public void callListMovie(String option){
         try{
             view.showLoading();
-            movieInteractor.callListMovies();
+            movieInteractor.callListMovies(option);
         }catch(Exception e){
             e.printStackTrace();
         }

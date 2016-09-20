@@ -28,7 +28,7 @@
                 android:layout_marginRight="@dimen/margin_general_right_left"
                 android:id="@+id/contentscrolling_txt_aniomovie"
                 android:visibility="gone"
-                android:text="2015" />
+                tools:text="2015" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
                 android:layout_marginRight="@dimen/margin_general_right_left"
                 android:id="@+id/contentscrolling_txt_timemovie"
                 android:visibility="gone"
-                android:text="120 min" />
+                tools:text="120 min" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
                 android:textSize="@dimen/height_contentscrolling_listitem"
                 android:layout_marginRight="@dimen/margin_general_right_left"
                 android:id="@+id/contentscrolling_txt_datemovie"
-                android:text=""/>
+                />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                 android:layout_margin="@dimen/text_margin"
                 android:textColor="@android:color/white"
                 android:id="@+id/contentscrolling_txt_descriptionmovie"
-                android:text="" />
+                />
         </LinearLayout>
         <TextView
             android:layout_width="wrap_content"

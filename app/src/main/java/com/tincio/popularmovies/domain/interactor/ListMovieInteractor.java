@@ -30,9 +30,9 @@ public class ListMovieInteractor {
         this.callback = callback;
     }
 
-    public void callListMovies(){
+    public void callListMovies(String option){
         try{
-            getRequesListMovies(Constants.serviceNames.GET_LIST_MOVIES);
+            getRequesListMovies(Constants.serviceNames.GET_LIST_MOVIES(option));
         }catch(Exception e){
             throw e;
         }
