@@ -20,6 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--Declarate content provider-->
+        <provider android:name=".data.model.PopularMoviesContentProvider"
+            android:authorities="com.tincio.popularmovies.contentproviders"/>
     </application>
 
 </manifest>
