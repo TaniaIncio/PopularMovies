@@ -1,5 +1,9 @@
 package com.tincio.popularmovies.domain.interactor;
 
+import android.content.ContentValues;
+import android.net.Uri;
+import android.provider.UserDictionary;
+
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -8,6 +12,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.tincio.popularmovies.R;
 import com.tincio.popularmovies.data.model.MovieRealm;
+import com.tincio.popularmovies.data.model.PopularMoviesContentProvider;
 import com.tincio.popularmovies.data.services.response.ResponseMovies;
 import com.tincio.popularmovies.data.services.response.Result;
 import com.tincio.popularmovies.domain.callback.ListMovieCallback;
@@ -92,9 +97,26 @@ public class ListMovieInteractor {
 
     //for favorite
 
-    public void saveFavorite(Integer id){
+    public void saveFavorite(Integer id, String title){
         try{
-            Realm realm = application.getRealm();
+            Uri mNewUri;
+
+
+// Defines an object to contain the new values to insert
+            ContentValues mNewValues = new ContentValues();
+
+/*
+ * Sets the values of each column and inserts the word. The arguments to the "put"
+ * method are "column name" and "value"
+ */
+            mNewValues.put(PopularMoviesContentProvider.Favorite.ID_MOVIE, id);
+            mNewValues.put(PopularMoviesContentProvider.Favorite.COL_NOMBRE, title);
+
+            mNewUri = application.getContentResolver().insert(
+                    PopularMoviesContentProvider.CONTENT_URI,   // the user dictionary content URI
+                    mNewValues                          // the values to insert
+            );
+           /* Realm realm = application.getRealm();
             realm.beginTransaction();
             MovieRealm movieSelection = realm.where(MovieRealm.class).equalTo("id",id).findFirst();
             if(movieSelection!=null){
@@ -105,7 +127,7 @@ public class ListMovieInteractor {
                 movieRealm.setId(id);
                 realm.copyToRealm(movieRealm);
             }
-            realm.commitTransaction();
+            realm.commitTransaction();*/
             callback.onResponseFavorite(application.getString(R.string.response_succesfull));
         }catch(Exception e){
             callback.onResponseFavorite(application.getString(R.string.response_error)+e.getMessage());

@@ -11,6 +11,7 @@ public class Constants {
 
     public static String KEY = "39335edf6af0e5ee10c4be3cded34eb1";
     public static String param = "api_key";
+    public static final String TABLE_FAVORITE = "Favorite";
     public static class serviceNames{
         public static String BASE_MOVIES = "http://api.themoviedb.org/3/movie/";
         public static String GET_IMAGE_MOVIES = "http://image.tmdb.org/t/p/w780";

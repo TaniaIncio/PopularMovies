@@ -10,11 +10,13 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
 
+import com.tincio.popularmovies.presentation.util.Constants;
+
 /**
  * Created by tincio on 08/02/17.
  */
 
-public class PopularMoviesContentProvider extends ContentProvider {
+    public class PopularMoviesContentProvider extends ContentProvider {
     private static final String uri =
             "content://com.tincio.popularmovies.contentproviders/Favorite";
 
@@ -33,7 +35,7 @@ public class PopularMoviesContentProvider extends ContentProvider {
     private FavoriteDataBase favoriteDataBase;
     private static final String BD_NOMBRE = "DBFavorite";
     private static final int BD_VERSION = 1;
-    private static final String TABLE_FAVORITE = "Favorite";
+
 
     @Override
     public boolean onCreate() {
@@ -54,7 +56,7 @@ public class PopularMoviesContentProvider extends ContentProvider {
 
             SQLiteDatabase db = favoriteDataBase.getWritableDatabase();
 
-            Cursor c = db.query(TABLE_FAVORITE, projection, where,
+            Cursor c = db.query( Constants.TABLE_FAVORITE, projection, where,
                     selectionArgs, null, null, sortOrder);
 
             return c;
@@ -83,7 +85,7 @@ public class PopularMoviesContentProvider extends ContentProvider {
 
         SQLiteDatabase db = favoriteDataBase.getWritableDatabase();
 
-        regId = db.insert(TABLE_FAVORITE, null, values);
+        regId = db.insert( Constants.TABLE_FAVORITE, null, values);
 
         Uri newUri = ContentUris.withAppendedId(CONTENT_URI, regId);
 
@@ -102,7 +104,7 @@ public class PopularMoviesContentProvider extends ContentProvider {
 
         SQLiteDatabase db = favoriteDataBase.getWritableDatabase();
 
-        cont = db.delete(TABLE_FAVORITE, where, selectionArgs);
+        cont = db.delete( Constants.TABLE_FAVORITE, where, selectionArgs);
 
         return cont;
     }
@@ -119,7 +121,7 @@ public class PopularMoviesContentProvider extends ContentProvider {
 
         SQLiteDatabase db = favoriteDataBase.getWritableDatabase();
 
-        cont = db.update(TABLE_FAVORITE, values, where, selectionArgs);
+        cont = db.update( Constants.TABLE_FAVORITE, values, where, selectionArgs);
 
         return cont;
     }
@@ -129,6 +131,7 @@ public class PopularMoviesContentProvider extends ContentProvider {
         private Favorite() {}
 
         public static final String COL_NOMBRE = "nombre";
+        public static final String ID_MOVIE = "id_movie";
     }
 
     /**Urimatcher*/

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.tincio.popularmovies.presentation.util.Constants;
+
 /**
  * Created by tincio on 08/02/17.
  */
@@ -24,6 +26,7 @@ public class FavoriteDataBase extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL(" DROP TABLE IF EXISTS " + Constants.TABLE_FAVORITE);
         db.execSQL(sqlCreate);
     }
 

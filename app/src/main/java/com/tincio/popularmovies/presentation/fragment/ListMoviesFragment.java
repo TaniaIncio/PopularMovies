@@ -67,16 +67,18 @@ public class ListMoviesFragment extends Fragment implements ListMovieView, Adapt
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),R.array.order_movies,R.layout.row_spinner_ordermovies);
         spinnerOrderMovies.setAdapter(adapter);
         spinnerOrderMovies.setOnItemSelectedListener(this);
+
+        gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+        recImageMovie.setHasFixedSize(true);
+        recImageMovie.setLayoutManager(gridLayoutManager);
+        presenter.callListMovie(getString(R.string.id_order_one));
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        gridLayoutManager = new GridLayoutManager(getActivity(), 2);
-        recImageMovie.setHasFixedSize(true);
-        recImageMovie.setLayoutManager(gridLayoutManager);
-        presenter.callListMovie(getString(R.string.id_order_one));
+
     }
 
     @Override
