@@ -35,12 +35,22 @@ import com.tincio.popularmovies.presentation.util.Constants;
     private FavoriteDataBase favoriteDataBase;
     private static final String BD_NOMBRE = "DBFavorite";
     private static final int BD_VERSION = 1;
-
+    public static final String[] FAVORITE_COLUMNS = {
+            Favorite.ID_MOVIE,
+            Favorite.COL_NOMBRE,
+            Favorite.PATH,
+            Favorite.OVERVIEW,
+            Favorite.RELEASEDATE,
+            Favorite.ORIGINAL_TITLE,
+            Favorite.ORIGINAL_LANGUAGE,
+            Favorite.BACKDROP_PATH,
+            Favorite.VOTE_AVERAGE
+    };
 
     @Override
     public boolean onCreate() {
         favoriteDataBase = new FavoriteDataBase(
-                getContext(), BD_NOMBRE, null, BD_VERSION);
+                getContext());
         return true;
     }
 
@@ -56,8 +66,8 @@ import com.tincio.popularmovies.presentation.util.Constants;
 
             SQLiteDatabase db = favoriteDataBase.getWritableDatabase();
 
-            Cursor c = db.query( Constants.TABLE_FAVORITE, projection, where,
-                    selectionArgs, null, null, sortOrder);
+            Cursor c = db.query( Constants.TABLE_FAVORITE, null, null,
+                    null, null, null, null);
 
             return c;
     }
@@ -132,6 +142,13 @@ import com.tincio.popularmovies.presentation.util.Constants;
 
         public static final String COL_NOMBRE = "nombre";
         public static final String ID_MOVIE = "id_movie";
+        public static final String PATH = "path";
+        public static final String OVERVIEW = "overview";
+        public static final String RELEASEDATE = "releaseDate";
+        public static final String ORIGINAL_TITLE = "originalTitle";
+        public static final String ORIGINAL_LANGUAGE = "originalLanguage";
+        public static final String BACKDROP_PATH = "backdropPath";
+        public static final String VOTE_AVERAGE = "voteAverage";
     }
 
     /**Urimatcher*/

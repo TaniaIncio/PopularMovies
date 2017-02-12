@@ -28,6 +28,7 @@
                 android:layout_marginRight="@dimen/margin_general_right_left"
                 android:id="@+id/contentscrolling_txt_aniomovie"
                 android:visibility="gone"
+
                 tools:text="2015" />
             <TextView
                 android:layout_width="wrap_content"
@@ -36,8 +37,8 @@
                 android:textStyle="bold"
                 android:textSize="@dimen/height_contentscrolling_listitem"
                 android:layout_marginRight="@dimen/margin_general_right_left"
-                android:id="@+id/contentscrolling_txt_timemovie"
-                android:visibility="gone"
+                android:id="@+id/contentscrolling_txt_average"
+
                 tools:text="120 min" />
             <TextView
                 android:layout_width="wrap_content"

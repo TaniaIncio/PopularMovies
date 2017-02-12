@@ -12,8 +12,6 @@ import io.realm.RealmConfiguration;
  * Created by innovagmd on 10/09/16.
  */
 public class PopularMoviesApplication extends Application {
-
-
     RequestQueue requestQueue;
     public static PopularMoviesApplication mApplication;
     Realm realm;

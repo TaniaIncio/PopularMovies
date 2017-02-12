@@ -11,7 +11,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.tincio.popularmovies.R;
-import com.tincio.popularmovies.data.model.MovieRealm;
 import com.tincio.popularmovies.data.services.response.ResponseTrailersMovie;
 import com.tincio.popularmovies.data.services.response.Result;
 import com.tincio.popularmovies.data.services.response.ResultTrailer;
@@ -29,8 +27,6 @@ import com.tincio.popularmovies.presentation.presenter.MovieTrailerPresenter;
 import com.tincio.popularmovies.presentation.util.Constants;
 import com.tincio.popularmovies.presentation.util.Utils;
 import com.tincio.popularmovies.presentation.view.MovieTrailerView;
-
-import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,6 +51,8 @@ public class DetalleMovieFragment extends Fragment implements MovieTrailerView {
     TextView txtDescripcionMovie;
     @BindView(R.id.contentscrolling_txt_datemovie)
     TextView dateMovie;
+    @BindView(R.id.contentscrolling_txt_average)
+    TextView average;
     ProgressDialog progress;
 
     MovieTrailerPresenter presenter;
@@ -107,6 +105,7 @@ public class DetalleMovieFragment extends Fragment implements MovieTrailerView {
             fabAddFavorito.setImageDrawable(Utils.getDrawableByName(getContext(),detailMovie.getFavorito()?favoritoOn:favoritoOff));
             fabAddFavorito.setTag(detailMovie.getFavorito()?favoritoOn:favoritoOff);
             presenter.getTrailerByMovie(detailMovie.getId());
+            average.setText("Average: "+detailMovie.getVoteAverage().toString());
         }
     }
 
@@ -167,7 +166,7 @@ public class DetalleMovieFragment extends Fragment implements MovieTrailerView {
     @OnClick(R.id.fragmentdetallemovie_fab_addfavorite)
     void onChangeStateFavorite(){
         try{
-            presenter.saveFavoriteMovie(detailMovieSelection.getId());
+            presenter.saveFavoriteMovie(detailMovieSelection);
         }catch(Exception e){
             e.printStackTrace();
         }

@@ -13,10 +13,21 @@ import com.tincio.popularmovies.presentation.util.Constants;
 public class FavoriteDataBase extends SQLiteOpenHelper {
 
     String sqlCreate = "CREATE TABLE Favorite " +
-            "(_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            " nombre TEXT)";
-    public FavoriteDataBase(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+            "(ID_ INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "id_movie TEXT, nombre TEXT , path TEXT, overview TEXT, releaseDate TEXT, " +
+            "originalTitle TEXT, originalLanguage TEXT, backdropPath TEXT, popularity REAL, " +
+            " voteCount INTEGER, voteAverage NUMERIC)";
+    static Integer VERSION = 1;
+    static String name = "db_favorite";
+    public FavoriteDataBase(Context context) {
+        super(context, name, null, VERSION);
+    }
+
+    public void deleteFavorite(Integer idFavorite){
+        String where = "id_movie = ?";
+        String[] params =new String[]{idFavorite.toString()};
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        sqLiteDatabase.delete(Constants.TABLE_FAVORITE, where, params);
     }
 
     @Override

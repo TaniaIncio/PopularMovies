@@ -49,7 +49,7 @@ public class AdapterRecyclerMovies extends  RecyclerView.Adapter<AdapterRecycler
         holder.txtItemRecycler.setText(listMovies.get(position).getTitle());
         // Retrieves an image specified by the URL, displays it in the UI.
         Picasso.with(context).load(Constants.serviceNames.GET_IMAGE_MOVIES+listMovies.get(position).getPosterPath()).into(holder.imgMovie);
-        String favorito ;
+        String favorito;
         if(listMovies.get(position).getFavorito()==null?false:listMovies.get(position).getFavorito()){
             favorito = favoritoOn;
         }else

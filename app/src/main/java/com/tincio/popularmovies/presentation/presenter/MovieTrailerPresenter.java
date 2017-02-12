@@ -1,6 +1,7 @@
 package com.tincio.popularmovies.presentation.presenter;
 
 import com.tincio.popularmovies.data.services.response.ResponseTrailersMovie;
+import com.tincio.popularmovies.data.services.response.Result;
 import com.tincio.popularmovies.domain.callback.MovieTrailerCallback;
 import com.tincio.popularmovies.domain.interactor.MovieTrailerInteractor;
 import com.tincio.popularmovies.presentation.view.MovieTrailerView;
@@ -37,7 +38,7 @@ public class MovieTrailerPresenter implements MvpPresenter<MovieTrailerView>, Mo
         movieInteractor.getMovieTrailers(id);
     }
 
-    public void saveFavoriteMovie(Integer id){
-        movieInteractor.saveFavorite(id);
+    public void saveFavoriteMovie(Result result){
+        movieInteractor.saveFavorite(result);
     }
 }

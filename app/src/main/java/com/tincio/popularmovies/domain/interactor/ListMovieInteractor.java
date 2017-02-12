@@ -1,8 +1,8 @@
 package com.tincio.popularmovies.domain.interactor;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.net.Uri;
-import android.provider.UserDictionary;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -11,7 +11,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.tincio.popularmovies.R;
-import com.tincio.popularmovies.data.model.MovieRealm;
+import com.tincio.popularmovies.data.model.FavoriteDataBase;
 import com.tincio.popularmovies.data.model.PopularMoviesContentProvider;
 import com.tincio.popularmovies.data.services.response.ResponseMovies;
 import com.tincio.popularmovies.data.services.response.Result;
@@ -21,12 +21,13 @@ import com.tincio.popularmovies.presentation.util.Constants;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
 
 
-public class ListMovieInteractor {
+public class ListMovieInteractor{
 
     ListMovieCallback callback;
     public int TIMEOUT = 5000;
@@ -37,7 +38,11 @@ public class ListMovieInteractor {
 
     public void callListMovies(String option){
         try{
-            getRequesListMovies(Constants.serviceNames.GET_LIST_MOVIES(option));
+            if(option.equals(application.getResources().getString(R.string.id_order_three))){
+                getFavoriteContentProvider();
+            }else{
+                getRequesListMovies(Constants.serviceNames.GET_LIST_MOVIES(option));
+            }
         }catch(Exception e){
             throw e;
         }
@@ -77,14 +82,18 @@ public class ListMovieInteractor {
 
         Realm realm = application.getRealm();
         List<Result> lista = responseMovies.getResults();
+         List<Result> listFav = parseCursorToList();
         int indice = 0;
         try{
             for(Result result: lista){
-                MovieRealm movie = realm.where(MovieRealm.class).equalTo("id",result.getId()).findFirst();
-                if(realm.where(MovieRealm.class).equalTo("id",result.getId()).findFirst()!=null){
-                    result.setFavorito(movie.getFavorite());
-                }else
-                    result.setFavorito(false);
+                result.setFavorito(false);
+                for (Result resultFav : listFav){
+                    if(result.getId().equals(resultFav.getId())){
+                        result.setFavorito(true);
+                        break;
+                    }
+
+                }
                 lista.set(indice, result);
                 indice = indice+1;
             }
@@ -97,42 +106,66 @@ public class ListMovieInteractor {
 
     //for favorite
 
-    public void saveFavorite(Integer id, String title){
+    public void saveFavorite(Result mResult){
         try{
             Uri mNewUri;
+            if(mResult.getFavorito() == false){
+                ContentValues mNewValues = new ContentValues();
+                mNewValues.put(PopularMoviesContentProvider.Favorite.ID_MOVIE, mResult.getId());
+                mNewValues.put(PopularMoviesContentProvider.Favorite.COL_NOMBRE, mResult.getTitle());
+                mNewValues.put(PopularMoviesContentProvider.Favorite.PATH, mResult.getPosterPath());
+                mNewValues.put(PopularMoviesContentProvider.Favorite.BACKDROP_PATH, mResult.getBackdropPath());
+                mNewValues.put(PopularMoviesContentProvider.Favorite.OVERVIEW, mResult.getOverview());
+                mNewValues.put(PopularMoviesContentProvider.Favorite.RELEASEDATE, mResult.getReleaseDate());
+                mNewValues.put(PopularMoviesContentProvider.Favorite.VOTE_AVERAGE, mResult.getVoteAverage());
 
-
-// Defines an object to contain the new values to insert
-            ContentValues mNewValues = new ContentValues();
-
-/*
- * Sets the values of each column and inserts the word. The arguments to the "put"
- * method are "column name" and "value"
- */
-            mNewValues.put(PopularMoviesContentProvider.Favorite.ID_MOVIE, id);
-            mNewValues.put(PopularMoviesContentProvider.Favorite.COL_NOMBRE, title);
-
-            mNewUri = application.getContentResolver().insert(
-                    PopularMoviesContentProvider.CONTENT_URI,   // the user dictionary content URI
-                    mNewValues                          // the values to insert
-            );
-           /* Realm realm = application.getRealm();
-            realm.beginTransaction();
-            MovieRealm movieSelection = realm.where(MovieRealm.class).equalTo("id",id).findFirst();
-            if(movieSelection!=null){
-                movieSelection.setFavorite(!(movieSelection.getFavorite()==null?false:movieSelection.getFavorite()));
+                mNewUri = application.getContentResolver().insert(
+                        PopularMoviesContentProvider.CONTENT_URI,   // the user dictionary content URI
+                        mNewValues                          // the values to insert
+                );
             }else{
-                MovieRealm movieRealm = new MovieRealm();
-                movieRealm.setFavorite(true);
-                movieRealm.setId(id);
-                realm.copyToRealm(movieRealm);
+                FavoriteDataBase dataBase = new FavoriteDataBase(application);
+                dataBase.deleteFavorite(mResult.getId());
             }
-            realm.commitTransaction();*/
             callback.onResponseFavorite(application.getString(R.string.response_succesfull));
         }catch(Exception e){
             callback.onResponseFavorite(application.getString(R.string.response_error)+e.getMessage());
             //  throw e;
         }
     }
+
+    public void getFavoriteContentProvider(){
+        ///cursor
+        List<Result> list = parseCursorToList();
+        ResponseMovies responseMovies = new ResponseMovies();
+        responseMovies.setResults(list);
+        callback.onResponse(checkFavoriteInList(responseMovies));
+
+    }
+
+    public List<Result> parseCursorToList(){
+        Cursor data = application.getContentResolver().query(PopularMoviesContentProvider.CONTENT_URI, PopularMoviesContentProvider.FAVORITE_COLUMNS, null,
+                PopularMoviesContentProvider.FAVORITE_COLUMNS, PopularMoviesContentProvider.Favorite.COL_NOMBRE);
+
+        List<Result> list = new ArrayList<>();
+        Result mResult;
+        if (data != null) {
+            while(data.moveToNext()) {
+                mResult = new Result();
+                mResult.setFavorito(true);
+                mResult.setId(data.getInt(1));
+                mResult.setTitle(data.getString(2));
+                mResult.setPosterPath(data.getString(3));
+                mResult.setOverview(data.getString(4));
+                mResult.setReleaseDate(data.getString(5));
+                mResult.setBackdropPath(data.getString(8));
+
+                list.add(mResult);
+            }
+            data.close();
+        }
+        return list;
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package com.tincio.popularmovies.domain.interactor;
 
-import android.util.Log;
+import android.content.ContentValues;
+import android.net.Uri;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -8,10 +9,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.tincio.popularmovies.R;
-import com.tincio.popularmovies.data.model.MovieRealm;
-import com.tincio.popularmovies.data.services.response.ResponseMovies;
+import com.tincio.popularmovies.data.model.FavoriteDataBase;
+import com.tincio.popularmovies.data.model.PopularMoviesContentProvider;
 import com.tincio.popularmovies.data.services.response.ResponseTrailersMovie;
 import com.tincio.popularmovies.data.services.response.Result;
 import com.tincio.popularmovies.domain.callback.MovieTrailerCallback;
@@ -19,13 +19,6 @@ import com.tincio.popularmovies.presentation.application.PopularMoviesApplicatio
 import com.tincio.popularmovies.presentation.util.Constants;
 
 import org.json.JSONObject;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-
-import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class MovieTrailerInteractor {
 
@@ -76,20 +69,27 @@ public class MovieTrailerInteractor {
     }
 
     //For favorite
-    public void saveFavorite(Integer id){
+    public void saveFavorite(Result mResult){
         try{
-            Realm realm = application.getRealm();
-            realm.beginTransaction();
-            MovieRealm movieSelection = realm.where(MovieRealm.class).equalTo("id",id).findFirst();
-            if(movieSelection!=null){
-                movieSelection.setFavorite(!(movieSelection.getFavorite()==null?false:movieSelection.getFavorite()));
+            Uri mNewUri;
+            if(mResult.getFavorito() == false){
+                ContentValues mNewValues = new ContentValues();
+                mNewValues.put(PopularMoviesContentProvider.Favorite.ID_MOVIE, mResult.getId());
+                mNewValues.put(PopularMoviesContentProvider.Favorite.COL_NOMBRE, mResult.getTitle());
+                mNewValues.put(PopularMoviesContentProvider.Favorite.PATH, mResult.getPosterPath());
+                mNewValues.put(PopularMoviesContentProvider.Favorite.BACKDROP_PATH, mResult.getBackdropPath());
+                mNewValues.put(PopularMoviesContentProvider.Favorite.OVERVIEW, mResult.getOverview());
+                mNewValues.put(PopularMoviesContentProvider.Favorite.RELEASEDATE, mResult.getReleaseDate());
+                mNewValues.put(PopularMoviesContentProvider.Favorite.VOTE_AVERAGE, mResult.getVoteAverage());
+
+                mNewUri = application.getContentResolver().insert(
+                        PopularMoviesContentProvider.CONTENT_URI,   // the user dictionary content URI
+                        mNewValues                          // the values to insert
+                );
             }else{
-                MovieRealm movieRealm = new MovieRealm();
-                movieRealm.setFavorite(true);
-                movieRealm.setId(id);
-                realm.copyToRealm(movieRealm);
+                FavoriteDataBase dataBase = new FavoriteDataBase(application);
+                dataBase.deleteFavorite(mResult.getId());
             }
-            realm.commitTransaction();
             callback.onResponseFavorite(application.getString(R.string.response_succesfull));
         }catch(Exception e){
             callback.onResponseFavorite(application.getString(R.string.response_error)+e.getMessage());

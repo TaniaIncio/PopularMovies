@@ -71,7 +71,8 @@ public class ListMoviesFragment extends Fragment implements ListMovieView, Adapt
         gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         recImageMovie.setHasFixedSize(true);
         recImageMovie.setLayoutManager(gridLayoutManager);
-        presenter.callListMovie(getString(R.string.id_order_one));
+        Log.i(TAG, "oncreateview");
+     //   presenter.callListMovie(getString(R.string.id_order_one));
         return view;
     }
 
@@ -121,7 +122,7 @@ public class ListMoviesFragment extends Fragment implements ListMovieView, Adapt
             public void setOnItemClickListener(Result movie, Integer indice) {
                 positionSelection = indice;
                 movieSelection = movie;
-                presenter.saveFavoriteMovie(movie.getId());
+                presenter.saveFavoriteMovie(movie);
                 if(getResources().getBoolean(R.bool.has_two_panes)){
                     DetalleMovieFragment fragment = (DetalleMovieFragment)getFragmentManager().findFragmentByTag(DetalleMovieFragment.TAG);
                     fragment.showResultFavorite(getString(R.string.response_succesfull));
@@ -141,6 +142,7 @@ public class ListMoviesFragment extends Fragment implements ListMovieView, Adapt
 
     @Override
     public void showLoading() {
+        Log.i(TAG, "showLoading");
         progress = Utils.showProgressDialog(getActivity());
     }
 
@@ -159,8 +161,10 @@ public class ListMoviesFragment extends Fragment implements ListMovieView, Adapt
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         if(i==0)
             presenter.callListMovie(getString(R.string.id_order_one));
-        else
+        else if(i == 1){
             presenter.callListMovie(getString(R.string.id_order_two));
+        } else
+            presenter.callListMovie(getString(R.string.id_order_three));
     }
 
     @Override
