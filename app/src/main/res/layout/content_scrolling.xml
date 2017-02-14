@@ -62,6 +62,8 @@
                 android:id="@+id/contentscrolling_txt_descriptionmovie"
                 />
         </LinearLayout>
+        <!--Trailers-->
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -80,6 +82,24 @@
 
         </android.support.v7.widget.RecyclerView>
 
+        <!--Reviews-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/height_subtitule_general"
+            android:text="@string/fragment_detallemovie_reviews"
+            android:textSize="@dimen/height_contentscrolling_trailers"
+            android:textStyle="bold"
+            android:layout_marginLeft="@dimen/margin_general_right_left"/>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/contentscrolling_recycler_reviews"
+            tools:listitem="@layout/row_recycler_detallemovie">
+
+        </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

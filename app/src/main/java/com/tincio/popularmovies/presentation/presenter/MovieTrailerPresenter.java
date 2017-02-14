@@ -1,5 +1,6 @@
 package com.tincio.popularmovies.presentation.presenter;
 
+import com.tincio.popularmovies.data.services.response.ResponseReviewsMovie;
 import com.tincio.popularmovies.data.services.response.ResponseTrailersMovie;
 import com.tincio.popularmovies.data.services.response.Result;
 import com.tincio.popularmovies.domain.callback.MovieTrailerCallback;
@@ -33,9 +34,15 @@ public class MovieTrailerPresenter implements MvpPresenter<MovieTrailerView>, Mo
         view.showResultFavorite(mensajes);
     }
 
+    @Override
+    public void onResponseReviews(ResponseReviewsMovie movieReviews, String... mensajes) {
+        view.showMovieReviews(movieReviews, (mensajes.length>0?mensajes[0]:""));
+    }
+
     public void getTrailerByMovie(Integer id){
         view.showLoading();
         movieInteractor.getMovieTrailers(id);
+        movieInteractor.getMovieReviews(id);
     }
 
     public void saveFavoriteMovie(Result result){

@@ -34,5 +34,15 @@ public class Constants {
                     .appendQueryParameter(param,KEY).build();
             return builUri.toString();
         }
+
+        public static String GET_REVIEWS(Integer id){
+            StringBuilder builderBase = new StringBuilder();
+            builderBase.append(BASE_MOVIES);
+            builderBase.append(id);
+            builderBase.append("/reviews?");
+            Uri builUri = Uri.parse(builderBase.toString()).buildUpon()
+                    .appendQueryParameter(param,KEY).build();
+            return builUri.toString();
+        }
     }
 }

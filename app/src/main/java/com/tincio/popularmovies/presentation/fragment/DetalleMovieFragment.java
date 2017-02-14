@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.tincio.popularmovies.R;
+import com.tincio.popularmovies.data.services.response.ResponseReviewsMovie;
 import com.tincio.popularmovies.data.services.response.ResponseTrailersMovie;
 import com.tincio.popularmovies.data.services.response.Result;
 import com.tincio.popularmovies.data.services.response.ResultTrailer;
@@ -152,6 +153,11 @@ public class DetalleMovieFragment extends Fragment implements MovieTrailerView {
         } catch(Exception e){
            e.printStackTrace();
         }
+    }
+
+    @Override
+    public void showMovieReviews(ResponseReviewsMovie detailMovie, String responseError) {
+
     }
 
     void getIntentWatchTrailer(String key){

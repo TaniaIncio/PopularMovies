@@ -2,6 +2,7 @@ package com.tincio.popularmovies.domain.interactor;
 
 import android.content.ContentValues;
 import android.net.Uri;
+import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -12,6 +13,7 @@ import com.google.gson.Gson;
 import com.tincio.popularmovies.R;
 import com.tincio.popularmovies.data.model.FavoriteDataBase;
 import com.tincio.popularmovies.data.model.PopularMoviesContentProvider;
+import com.tincio.popularmovies.data.services.response.ResponseReviewsMovie;
 import com.tincio.popularmovies.data.services.response.ResponseTrailersMovie;
 import com.tincio.popularmovies.data.services.response.Result;
 import com.tincio.popularmovies.domain.callback.MovieTrailerCallback;
@@ -31,6 +33,7 @@ public class MovieTrailerInteractor {
 
     public void getMovieTrailers(Integer id){
         try{
+            Log.i("tag movie", Constants.serviceNames.GET_TRAILERS(id));
             getRequesListMovies(Constants.serviceNames.GET_TRAILERS(id));
         }catch(Exception e){
             throw e;
@@ -97,5 +100,43 @@ public class MovieTrailerInteractor {
         }
     }
 
+    //get reviews of usuers
+    public void getMovieReviews(Integer id){
+        try{
+            getRequestReviewsMovies(Constants.serviceNames.GET_REVIEWS(id));
+        }catch(Exception e){
+            throw e;
+        }
+    }
+    void getRequestReviewsMovies(String url) {
+        try{
+
+            if (application != null) {
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                        url,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Gson gson = new Gson();
+                                ResponseReviewsMovie responseMovies = gson.fromJson(response.toString(), ResponseReviewsMovie.class);
+                                callback.onResponseReviews(responseMovies);
+
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                callback.onResponse(null, error.getMessage());
+                            }
+                        });
+                jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                        TIMEOUT, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                application.getRequestQueue().add(jsonObjectRequest);
+            }
+        }catch(Exception e){
+            throw e;
+        }
+    }
 
 }
