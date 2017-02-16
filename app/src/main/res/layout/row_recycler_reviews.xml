@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
@@ -8,11 +8,16 @@
     android:id="@+id/rowrecyclerdetalle_linear_reviews"
     android:clickable="true"
     android:background="@drawable/selector_row_recycler"
-    android:paddingLeft="@dimen/margin_general_right_left">
+    android:paddingLeft="@dimen/margin_general_right_left"
+    android:paddingBottom="@dimen/margin_general_right_left">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_play_circle_outline_white_36dp"
+        android:src="@mipmap/ic_face_white_24dp"
         android:id="@+id/rowrecyclerdetalle_img_nrotrailer"/>
     <TextView
         android:layout_width="wrap_content"
@@ -20,7 +25,17 @@
         android:textColor="@android:color/white"
         android:layout_marginLeft="@dimen/margin_general_right_left"
         android:textSize="@dimen/height_contentscrolling_listitem"
-        android:id="@+id/rowrecyclerdetalle_txt_nombretrailer"
+        android:id="@+id/rowrecyclerdetalle_txt_user"
         />
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:layout_marginLeft="@dimen/margin_general_right_left"
+        android:textSize="@dimen/height_contentscrolling_listitem"
+        android:id="@+id/rowrecyclerdetalle_txt_review"
+        />
+
 
 </LinearLayout>
