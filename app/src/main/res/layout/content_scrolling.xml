@@ -97,7 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/contentscrolling_recycler_reviews"
-            tools:listitem="@layout/row_recycler_detallemovie">
+            tools:listitem="@layout/row_recycler_reviews">
 
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>

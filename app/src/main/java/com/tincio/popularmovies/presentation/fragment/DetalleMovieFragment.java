@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import com.tincio.popularmovies.data.services.response.ResponseTrailersMovie;
 import com.tincio.popularmovies.data.services.response.Result;
 import com.tincio.popularmovies.data.services.response.ResultTrailer;
 import com.tincio.popularmovies.presentation.adapter.AdapterRecyclerDetailMovie;
+import com.tincio.popularmovies.presentation.adapter.AdapterRecyclerReviewsMovie;
 import com.tincio.popularmovies.presentation.presenter.MovieTrailerPresenter;
 import com.tincio.popularmovies.presentation.util.Constants;
 import com.tincio.popularmovies.presentation.util.Utils;
@@ -55,6 +57,11 @@ public class DetalleMovieFragment extends Fragment implements MovieTrailerView {
     @BindView(R.id.contentscrolling_txt_average)
     TextView average;
     ProgressDialog progress;
+    /**FOr reviews*/
+    AdapterRecyclerReviewsMovie adapterRecyclerReviews;
+    @BindView(R.id.contentscrolling_recycler_reviews)
+    RecyclerView recReviews;
+    LinearLayoutManager linearLayoutManagerReviews;
 
     MovieTrailerPresenter presenter;
     String favoritoOff= "ic_favorite_border_white_24dp";
@@ -106,7 +113,10 @@ public class DetalleMovieFragment extends Fragment implements MovieTrailerView {
             fabAddFavorito.setImageDrawable(Utils.getDrawableByName(getContext(),detailMovie.getFavorito()?favoritoOn:favoritoOff));
             fabAddFavorito.setTag(detailMovie.getFavorito()?favoritoOn:favoritoOff);
             presenter.getTrailerByMovie(detailMovie.getId());
-            average.setText("Average: "+detailMovie.getVoteAverage().toString());
+            if(detailMovie.getVoteAverage() != null){
+                average.setText("Average: "+detailMovie.getVoteAverage().toString());
+            }
+
         }
     }
 
@@ -133,6 +143,8 @@ public class DetalleMovieFragment extends Fragment implements MovieTrailerView {
                 getIntentWatchTrailer(trailer.getKey());
             }
         });
+        recTrailers.setNestedScrollingEnabled(false);
+        recTrailers.setHasFixedSize(true);
     }
 
     @Override
@@ -157,6 +169,12 @@ public class DetalleMovieFragment extends Fragment implements MovieTrailerView {
 
     @Override
     public void showMovieReviews(ResponseReviewsMovie detailMovie, String responseError) {
+        adapterRecyclerReviews = new AdapterRecyclerReviewsMovie(detailMovie==null?null:detailMovie.getResults());
+        linearLayoutManagerReviews = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL, false);
+        recReviews.setHasFixedSize(true);
+        recReviews.setLayoutManager(linearLayoutManagerReviews);
+        recReviews.setAdapter(adapterRecyclerReviews);
+        recReviews.setNestedScrollingEnabled(false);
 
     }
 

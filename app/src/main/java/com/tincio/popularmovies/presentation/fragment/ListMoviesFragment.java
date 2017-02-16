@@ -71,8 +71,7 @@ public class ListMoviesFragment extends Fragment implements ListMovieView, Adapt
         gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         recImageMovie.setHasFixedSize(true);
         recImageMovie.setLayoutManager(gridLayoutManager);
-        Log.i(TAG, "oncreateview");
-     //   presenter.callListMovie(getString(R.string.id_order_one));
+
         return view;
     }
 
