@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Popular Movies</string>
+    <string name="app_name">Top Rated Movies</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="fragment_detallemovie_trailers">Trailers</string>

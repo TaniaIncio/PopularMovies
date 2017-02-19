@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/fragment_base"
-        android:name="com.tincio.popularmovies.presentation.fragment.ListMoviesFragment"
+        android:name="com.tincio.topratedmovies.presentation.fragment.ListMoviesFragment"
         android:tag="ListMoviesFragment"
         tools:layout="@layout/fragment_list_movies"
         android:layout_weight="1">
@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/fragment_base2"
-        android:name="com.tincio.popularmovies.presentation.fragment.DetalleMovieFragment"
+        android:name="com.tincio.topratedmovies.presentation.fragment.DetalleMovieFragment"
         android:tag="DetalleMovieFragment"
         tools:layout="@layout/fragment_detalle_movie"
         android:layout_weight="1">

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tincio.popularmovies" >
+    package="com.tincio.topratedmovies" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -22,7 +22,7 @@
         </activity>
         <!--Declarate content provider-->
         <provider android:name=".data.model.PopularMoviesContentProvider"
-            android:authorities="com.tincio.popularmovies.contentproviders"/>
+            android:authorities="com.tincio.topratedmovies.contentproviders"/>
     </application>
 
 </manifest>

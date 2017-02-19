@@ -1,4 +1,4 @@
-package com.tincio.popularmovies;
+package com.tincio.topratedmovies;
 
 import org.junit.Test;
 
