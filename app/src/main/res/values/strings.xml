@@ -18,4 +18,7 @@
     <string name="id_order_one">popular</string>
     <string name="id_order_two">top_rated</string>
     <string name="id_order_three">favorite</string>
+    <string name="id_aplicacion_admob_bloque">ca-app-pub-</string>
+
+
 </resources>

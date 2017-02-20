@@ -36,12 +36,12 @@ public class ListMovieInteractor{
         this.callback = callback;
     }
 
-    public void callListMovies(String option){
+    public void callListMovies(String option, int page){
         try{
             if(option.equals(application.getResources().getString(R.string.id_order_three))){
                 getFavoriteContentProvider();
             }else{
-                getRequesListMovies(Constants.serviceNames.GET_LIST_MOVIES(option));
+                getRequesListMovies(Constants.serviceNames.GET_LIST_MOVIES(option, page));
             }
         }catch(Exception e){
             throw e;

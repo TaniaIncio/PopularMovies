@@ -1,6 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:background="@mipmap/background_gridlayout"
     tools:context="com.tincio.topratedmovies.presentation.fragment.ListMoviesFragment"
     xmlns:tools="http://schemas.android.com/tools">
@@ -19,11 +20,28 @@
         android:background="@color/colorPrimary"
         android:id="@+id/spinner_order_movies">
     </Spinner>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
     <android.support.v7.widget.RecyclerView
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:id="@+id/activity_gridlayout_recycler"
-        tools:listitem="@layout/row_recycler_movies">
+        tools:listitem="@layout/row_recycler_movies"
+        android:scrollbars="vertical"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbarSize="5dp"
+        android:layout_marginBottom="50dp">
     </android.support.v7.widget.RecyclerView>
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/bottom_banner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            ads:adSize="BANNER"
+            android:background="@color/colorPrimary"
+            ads:adUnitId="@string/id_aplicacion_admob_bloque" />
+        </RelativeLayout>
     </LinearLayout>
 </FrameLayout>

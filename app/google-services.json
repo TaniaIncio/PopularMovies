@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "631616091830",
+    "firebase_url": "https://top-rated-movies.firebaseio.com",
+    "project_id": "top-rated-movies",
+    "storage_bucket": "top-rated-movies.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:631616091830:android:718e7cc7dc644050",
+        "android_client_info": {
+          "package_name": "com.tincio.topratedmovies"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "631616091830-gisdg827ta669574i63ph5ms1e6dbuh9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tincio.topratedmovies",
+            "certificate_hash": "6D37446E6DC73DC8BB318688A6FFFCB57507B318"
+          }
+        },
+        {
+          "client_id": "631616091830-78q8v43eo832kp6t9p0ribqgn83o6s2u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0kPMggrBxYeJJJC1fcp30NQuvUxcLvMM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "631616091830-78q8v43eo832kp6t9p0ribqgn83o6s2u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
