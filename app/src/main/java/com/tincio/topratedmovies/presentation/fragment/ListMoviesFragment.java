@@ -179,7 +179,13 @@ public class ListMoviesFragment extends Fragment implements ListMovieView, Adapt
     public void showResultFavorite(String response) {
         if(response.equals(getString(R.string.response_succesfull))){
             movieSelection.setFavorito(!movieSelection.getFavorito());
-            adapterRecycler.updateItemList(positionSelection, movieSelection);
+            if(OPTION.equals(getString(R.string.id_order_three))){
+                adapterRecycler.getListMovies().remove(movieSelection);
+                adapterRecycler.notifyDataSetChanged();
+            }else{
+                adapterRecycler.updateItemList(positionSelection, movieSelection);
+            }
+
         }
     }
 

@@ -9,8 +9,8 @@ android {
         applicationId 'com.tincio.topratedmovies'
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 4
+        versionName "1.1"
     }
     buildTypes {
         release {

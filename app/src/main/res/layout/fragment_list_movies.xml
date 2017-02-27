@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
@@ -6,10 +6,6 @@
     tools:context="com.tincio.topratedmovies.presentation.fragment.ListMoviesFragment"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,11 +14,9 @@
         android:layout_marginTop="@dimen/activity_gridlayout_marginrow"
         android:minHeight="?attr/listPreferredItemHeight"
         android:background="@color/colorPrimary"
+        android:layout_alignParentTop="true"
         android:id="@+id/spinner_order_movies">
     </Spinner>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
     <android.support.v7.widget.RecyclerView
         android:layout_height="match_parent"
         android:layout_width="match_parent"
@@ -31,17 +25,16 @@
         android:scrollbars="vertical"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbarSize="5dp"
+        android:layout_below="@+id/spinner_order_movies"
         android:layout_marginBottom="50dp">
     </android.support.v7.widget.RecyclerView>
         <com.google.android.gms.ads.AdView
             android:id="@+id/bottom_banner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             ads:adSize="BANNER"
             android:background="@color/colorPrimary"
             ads:adUnitId="@string/id_aplicacion_admob_bloque" />
-        </RelativeLayout>
-    </LinearLayout>
-</FrameLayout>
+</RelativeLayout>

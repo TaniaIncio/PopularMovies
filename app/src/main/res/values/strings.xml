@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Top Rated Movies</string>
+    <string name="app_name">Movies</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="fragment_detallemovie_trailers">Trailers</string>
@@ -18,7 +18,7 @@
     <string name="id_order_one">popular</string>
     <string name="id_order_two">top_rated</string>
     <string name="id_order_three">favorite</string>
-    <string name="id_aplicacion_admob_bloque">ca-app-pub-</string>
+    <string name="id_aplicacion_admob_bloque">ca-app-pub-5145296460604039/5946573908</string>
 
 
 </resources>

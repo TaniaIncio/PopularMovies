@@ -8,7 +8,7 @@ import android.util.Log;
  */
 public final class  Constants {
 
-    public static String KEY = "";
+    public static String KEY = "39335edf6af0e5ee10c4be3cded34eb1";
     public static String param = "api_key";
     public static String param_page = "page";
     public static final String TABLE_FAVORITE = "Favorite";
